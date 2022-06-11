@@ -59,6 +59,17 @@ namespace eCartaBEPrj.Controllers
         }
 
 
+        // GET: api/Cajas/validadas/negocio/idNegocio
+        [HttpGet("validadas/negocio/{idNegocio}")]
+        public async Task<ActionResult<IEnumerable<OperacionesCaja>>> GetCajasValidadasPorNegocio(int idNegocio)
+        {
+            return await _context.OperacionesCajas
+                .Where(e => e.IdNegocio == idNegocio)
+                .Where(e => e.Tipo == "Incremento")
+                .Where(e => e.Estado == "Validado")
+                .ToListAsync();
+        }
+
         // GET: api/Cajas/negocio/idNegocio
         [HttpGet("negocio/{idNegocio}")]
         public async Task<ActionResult<IEnumerable<OperacionesCaja>>> GetCajasPorNegocio(int idNegocio)
@@ -88,6 +99,7 @@ namespace eCartaBEPrj.Controllers
             return await _context.OperacionesCajas
                 .Where(e=>e.FechaHora.Value.Date==DateTime.Today)
                 .Where(e=>e.Producto!="-")
+                .Where(e=>e.Operacion== "Plato pagado")
                 .ToListAsync();
         }
 
